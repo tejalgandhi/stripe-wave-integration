@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Wave\Plan;
 use Wave\User;
 use Wave\PaddleSubscription;
@@ -30,7 +31,9 @@ class SubscriptionController extends Controller
         $this->vendor_id = config('wave.paddle.vendor');
 
         $this->paddle_checkout_url = (config('wave.paddle.env') == 'sandbox') ? 'https://sandbox-checkout.paddle.com/api' : 'https://checkout.paddle.com/api';
+//        $this->paddle_checkout_url = (config('wave.paddle.env') == 'sandbox') ? 'https://checkout.paddle.com/api' : 'https://checkout.paddle.com/api';
         $this->paddle_vendors_url = (config('wave.paddle.env') == 'sandbox') ? 'https://sandbox-vendors.paddle.com/api' : 'https://vendors.paddle.com/api';
+//        $this->paddle_vendors_url = (config('wave.paddle.env') == 'sandbox') ? 'https://vendors.paddle.com/api' : 'https://vendors.paddle.com/api';
     }
 
 
@@ -79,7 +82,6 @@ class SubscriptionController extends Controller
     }
 
     public function checkout(Request $request){
-
         //PaddleSubscriptions
         $response = Http::get($this->paddle_checkout_url . '/1.0/order?checkout_id=' . $request->checkout_id);
         $status = 0;
@@ -88,7 +90,6 @@ class SubscriptionController extends Controller
 
         if( $response->successful() ){
             $resBody = json_decode($response->body());
-
             if(isset($resBody->order)){
                 $order = $resBody->order;
 
@@ -101,8 +102,8 @@ class SubscriptionController extends Controller
                         'vendor_auth_code' => $this->vendor_auth_code,
                         'subscription_id' => $order->subscription_id
                     ]);
-
                     $subscriptionData = json_decode($subscriptionUser->body());
+
                     $subscription = $subscriptionData->response[0];
 
                     if(auth()->guest()){

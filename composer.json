@@ -20,6 +20,7 @@
         "laravel/helpers": "^1.0",
         "laravel/tinker": "^2.0",
         "livewire/livewire": "^2.4",
+        "stripe/stripe-php": "^7.116",
         "tcg/voyager": "1.4.x-dev",
         "tymon/jwt-auth": "dev-develop"
     },
@@ -69,7 +70,10 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "repositories": {
         "hooks": {

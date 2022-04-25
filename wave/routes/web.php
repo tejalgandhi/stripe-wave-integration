@@ -3,6 +3,12 @@
 Route::impersonate();
 
 Route::get('/', '\Wave\Http\Controllers\HomeController@index')->name('wave.home');
+Route::get('/get-paddle-pay-link', '\Wave\Http\Controllers\HomeController@getPaddlePayLink')->name('wave.get-paddle-pay-link');
+Route::get('/create-checkout-session', '\Wave\Http\Controllers\HomeController@createCheckoutSession')->name('create-checkout-session');
+Route::post('/charge', '\Wave\Http\Controllers\HomeController@charge')->name('charge');
+Route::get('/success', '\Wave\Http\Controllers\HomeController@success')->name('success');
+Route::post('/payment-success', '\Wave\Http\Controllers\HomeController@paymentSuccess')->name('payment-success');
+Route::get('/cancel', '\Wave\Http\Controllers\HomeController@success')->name('cancel');
 Route::get('@{username}', '\Wave\Http\Controllers\ProfileController@index')->name('wave.profile');
 
 // Documentation routes
